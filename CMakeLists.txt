@@ -3,6 +3,10 @@
 cmake_minimum_required(VERSION 3.20)
 project(MouseInjectorRA VERSION 0.1.0 LANGUAGES C)
 
+if(NOT MSVC)
+  message(FATAL_ERROR "This Windows x86 release build requires the Microsoft Visual C compiler")
+endif()
+
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
 set(RCHEEVOS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/rcheevos" CACHE PATH "rcheevos source")
 
