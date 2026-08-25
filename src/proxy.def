@@ -1,0 +1,19 @@
+; SPDX-License-Identifier: GPL-2.0-or-later
+
+LIBRARY Mouse_Injector_RA
+EXPORTS
+ CloseDLL
+ ControllerCommand
+ DllAbout
+ DllConfig
+ DllTest
+ GetDllInfo
+ GetKeys
+ HookRDRAM
+ HookROM
+ InitiateControllers
+ ReadController
+ RomClosed
+ RomOpen
+ WM_KeyDown
+ WM_KeyUp

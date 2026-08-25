@@ -1,0 +1,43 @@
+name: Build Windows x86 DLL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Check out pinned rcheevos
+        shell: pwsh
+        run: |
+          git clone https://github.com/RetroAchievements/rcheevos.git external/rcheevos
+          git -C external/rcheevos checkout 2ad0b8672f68a48148620164510b963039e49eb1
+
+      - name: Configure and build x86 DLL
+        shell: cmd
+        run: |
+          call "%ProgramFiles%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DRCHEEVOS_DIR=external/rcheevos
+          cmake --build build --parallel
+
+      - name: Upload unsigned test build
+        uses: actions/upload-artifact@v4
+        with:
+          name: 1964GEPD-RA-Proxy-Windows-x86
+          path: |
+            dist/Mouse_Injector_RA.dll
+            dist/1964-ra.ini.example
+            README.md
+            LICENSE
+            THIRD_PARTY_NOTICES.md
+            PRIVACY.md
+            licenses/*

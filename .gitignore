@@ -1,0 +1,16 @@
+/build/
+/external/rcheevos/
+/dist/*.exp
+/dist/*.lib
+/dist/*.pdb
+1964-ra.ini
+retroachievements.log
+*.z64
+*.n64
+*.v64
+*.rom
+*.sav
+*.eep
+*.fla
+*.sra
+
