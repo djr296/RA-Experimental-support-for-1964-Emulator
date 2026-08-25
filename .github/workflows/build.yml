@@ -32,15 +32,11 @@ jobs:
           cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DRCHEEVOS_DIR=external/rcheevos
           cmake --build build --parallel
 
-      - name: Upload unsigned test build
-        uses: actions/upload-artifact@v4
-        with:
-          name: 1964GEPD-RA-Proxy-Windows-x86
-          path: |
-            dist/Mouse_Injector_RA.dll
-            dist/1964-ra.ini.example
-            README.md
-            LICENSE
-            THIRD_PARTY_NOTICES.md
-            PRIVACY.md
-            licenses/*
+      - name: Verify Windows x86 output
+        shell: pwsh
+        run: |
+          $dll = [IO.File]::ReadAllBytes('dist/Mouse_Injector_RA.dll')
+          $peOffset = [BitConverter]::ToInt32($dll, 0x3c)
+          $machine = [BitConverter]::ToUInt16($dll, $peOffset + 4)
+          if ($machine -ne 0x014c) { throw "Expected an x86 DLL, found PE machine 0x$($machine.ToString('X4'))" }
+          Get-FileHash -Algorithm SHA256 'dist/Mouse_Injector_RA.dll'
