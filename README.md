@@ -1,95 +1,139 @@
-# RetroAchievements for 1964 GEPD
+# RetroAchievements for GoldenEye 007 & Perfect Dark on 1964 GEPD
 
-[![Windows x86 build](https://github.com/djr296/RA-Experimental-support-for-1964-Emulator/actions/workflows/build.yml/badge.svg)](https://github.com/djr296/RA-Experimental-support-for-1964-Emulator/actions/workflows/build.yml)
+Earn RetroAchievements while playing **GoldenEye 007** and **Perfect Dark** with the mouse-and-keyboard-focused [1964 GEPD Edition](https://github.com/Graslu/1964GEPD).
 
-Play **GoldenEye 007** and **Perfect Dark** in the mouse-and-keyboard-focused [1964 GEPD Edition](https://github.com/Graslu/1964GEPD) while earning RetroAchievements.
+> **Unofficial experimental release — Casual mode only.** This project is not an official or approved RetroAchievements emulator, and Hardcore mode is not supported.
 
-This small Windows plugin sits in front of the existing Mouse Injector. Mouse input, fullscreen, video settings, and the emulator itself still come from the normal 1964 GEPD bundle; the proxy adds game identification and achievement checking through the official [rcheevos](https://github.com/RetroAchievements/rcheevos) library.
+## What you need
 
-> **Experimental Casual-mode release.** Hardcore is permanently disabled. This is an unofficial community project and is not currently listed as an approved RetroAchievements emulator.
-
-## Download
-
-Open [Releases](https://github.com/djr296/RA-Experimental-support-for-1964-Emulator/releases), choose the newest version, and download the file ending in **`Windows-Casual.zip`**.
-
-You will also need:
-
-- Windows and the original 32-bit `1964.exe` from the [official 1964 GEPD bundle](https://github.com/Graslu/1964GEPD/releases/tag/latest)
+- Windows
+- A clean copy of the [latest 1964 GEPD Edition](https://github.com/Graslu/1964GEPD/releases/tag/latest)
 - Your own legally obtained GoldenEye 007 or Perfect Dark ROM
 - A free [RetroAchievements account](https://retroachievements.org/createaccount.php)
 
-No ROM, emulator executable, game asset, or original Mouse Injector is included here.
+This download does **not** include ROMs, game assets, or the emulator itself.
 
-## Install in about five minutes
+## Download
 
-1. Close 1964 and make a backup of its folder.
-2. Open the emulator's `plugin` folder.
-3. Rename `Mouse_Injector.dll` to **`Mouse_Injector_og.dll`**. Do not delete it.
-4. Copy `Mouse_Injector_RA.dll` from the downloaded release into that same `plugin` folder.
-5. Copy `1964-ra.ini.example` beside `1964.exe` and rename it to **`1964-ra.ini`**.
-6. Open `1964-ra.ini` in Notepad and enter your RetroAchievements username and password. Leave `Hardcore=0`.
-7. Start the original `1964.exe`. If prompted to choose an input plugin, select the Mouse Injector entry ending in **`+ RetroAchievements`**.
-8. Start a supported game. You should see **“Achievements active for … (Casual mode)”**.
+[**Download version 0.1.0 for Windows**](https://github.com/djr296/RA-Experimental-support-for-1964-Emulator/releases/download/v0.1.0/1964GEPD-RA-Proxy-v0.1.0-Windows-Casual.zip)
 
-After the first successful login, the plugin erases the password from the INI and saves the RetroAchievements login token instead. Do not share your real `1964-ra.ini`—the token should be treated like a password.
+You can also visit the [Releases page](https://github.com/djr296/RA-Experimental-support-for-1964-Emulator/releases) to check for a newer version. Download the ZIP whose name ends in **`Windows-Casual.zip`**.
 
-For a slower file-by-file walkthrough, see [Installation and updating](docs/INSTALLATION.md).
+## Installation
 
-## Does it award real achievements?
+Start with a fresh, working 1964 GEPD folder.
 
-Yes. When an achievement condition triggers and RetroAchievements accepts it, the unlock is recorded as a **Casual** unlock on your RetroAchievements profile. The startup message only confirms that the game and achievement set loaded; it does not by itself prove that an achievement unlocked.
+1. Close 1964.
+2. Make a backup copy of your 1964 GEPD folder.
+3. Extract the downloaded RetroAchievements ZIP.
+4. Open the **`plugin`** folder inside your 1964 GEPD folder.
+5. Rename **`Mouse_Injector.dll`** to **`Mouse_Injector_og.dll`**.
+   - Keep this file. The RetroAchievements plugin uses it to preserve the normal mouse injector.
+6. Copy **`Mouse_Injector_RA.dll`** from the downloaded ZIP into the **`plugin`** folder.
+7. Copy **`1964-ra.ini.example`** from the ZIP into the main 1964 GEPD folder, beside **`1964.exe`**.
+8. Rename **`1964-ra.ini.example`** to **`1964-ra.ini`**.
+9. Open **`1964-ra.ini`** in Notepad and enter your RetroAchievements username and password:
 
-To verify everything:
+```ini
+[RetroAchievements]
+Enabled=1
+Hardcore=0
+Username=YourUsername
+Password=YourPassword
+Token=
+```
 
-1. Trigger an easy achievement you have not previously earned.
-2. Look for the **Achievement Unlocked** message.
-3. Refresh your profile on RetroAchievements and confirm the new Casual unlock appears.
-4. If it does not, close the game and inspect `retroachievements.log` beside `1964.exe`.
+10. Save the file and start the original **`1964.exe`**.
+11. If 1964 asks you to choose an input plugin, select the Mouse Injector entry ending in **`+ RetroAchievements`**.
+12. Start GoldenEye 007 or Perfect Dark.
 
-## Supported games
+Your files should now look like this:
 
-| Game | Status | Notes |
-| --- | --- | --- |
-| GoldenEye 007 | Tested | Requires a ROM hash supported by the existing RetroAchievements set. |
-| Perfect Dark | Tested | Requires a ROM hash supported by the existing RetroAchievements set. |
+```text
+1964 GEPD/
+├── 1964.exe
+├── 1964-ra.ini
+└── plugin/
+    ├── Mouse_Injector_og.dll
+    └── Mouse_Injector_RA.dll
+```
 
-This proxy deliberately targets these two games. Other N64 games are not supported, and the specialized 1964 GEPD build is generally a poor choice for them.
+When a supported game starts, you should see:
 
-## Important limitations
+```text
+Achievements active for ... (Casual mode)
+```
 
-- **Casual mode only.** The emulator cannot enforce every RetroAchievements Hardcore rule, so the proxy always writes `Hardcore=0` and ignores attempts to enable it.
-- **Windows x86 only.** Wine and other operating systems have not been validated.
-- **Experimental client.** Do not describe this project as official or approved by RetroAchievements.
-- **Controller-poll evaluation.** 1964's plugin interface has no true video-frame callback. The proxy evaluates from controller polling and caps checks at roughly 60 per second to protect game performance.
-- **No bundled emulator or games.** Install over a clean upstream 1964 GEPD bundle and supply your own ROM.
+After your first successful login, the plugin removes the password from the INI and saves a login token instead. **Do not share your `1964-ra.ini` file**, because that token should be treated like a password.
 
-## Problems?
+For a more detailed walkthrough, see [Installation and updating](docs/INSTALLATION.md).
 
-Start with [Troubleshooting](docs/TROUBLESHOOTING.md). The most common fixes are:
+## Confirm achievements are working
 
-- Keep both `Mouse_Injector_RA.dll` and `Mouse_Injector_og.dll` in the `plugin` folder.
-- Put `1964-ra.ini` beside `1964.exe`, not in the plugin folder.
-- Launch the original `1964.exe`; do not use an old experimental `1964-RA.exe`.
-- Confirm your ROM hash is supported by RetroAchievements.
-- Read `retroachievements.log` and remove private information before attaching an excerpt to a bug report.
+The startup message means your game and its achievement set loaded. To confirm that unlocks are registering:
 
-## Update or remove it
+1. Choose an achievement you have not already earned.
+2. Complete its requirements.
+3. Look for the **Achievement Unlocked** message.
+4. Refresh your RetroAchievements profile and confirm that it appears as a Casual unlock.
 
-To update, close 1964 and replace only `plugin/Mouse_Injector_RA.dll`. Keep your existing `1964-ra.ini` so your saved token is preserved.
+If the achievement does not appear, close 1964 and check **`retroachievements.log`** beside **`1964.exe`**.
 
-To uninstall:
+## Common problems
 
-1. Delete `plugin/Mouse_Injector_RA.dll`.
-2. Rename `plugin/Mouse_Injector_og.dll` back to `Mouse_Injector.dll`.
-3. Optionally delete `1964-ra.ini` and `retroachievements.log` to remove the saved login and local log.
+**No RetroAchievements message appears**
 
-## For developers and reviewers
+- Confirm that both DLL files are in the **`plugin`** folder.
+- Confirm that **`1964-ra.ini`** is beside **`1964.exe`**, not inside the plugin folder.
+- Make sure 1964 is using the input plugin ending in **`+ RetroAchievements`**.
+- Make sure your exact ROM version is supported by RetroAchievements.
 
-The repository contains the complete proxy source and a Windows x86 workflow that performs a clean build against pinned rcheevos v12.4.0. The workflow validates the DLL architecture but intentionally does **not** upload an Actions artifact, so it uses no artifact-storage quota.
+**The mouse injector does not work**
 
-See [Contributing](CONTRIBUTING.md), [Privacy](PRIVACY.md), [Security](SECURITY.md), and [third-party notices](THIRD_PARTY_NOTICES.md). The proxy is GPL-2.0-or-later; rcheevos is MIT licensed.
+- The original plugin must be named exactly **`Mouse_Injector_og.dll`**.
+- Do not replace it with a second copy of **`Mouse_Injector_RA.dll`**.
 
-## Unofficial project notice
+**The game is black, crashes, is pixelated, or runs slowly**
+
+- Use a fresh official 1964 GEPD folder.
+- Launch the original **`1964.exe`**—do not use an old experimental **`1964-RA.exe`**.
+- Restore the video, audio, and emulator settings supplied with the official 1964 GEPD bundle.
+
+**Login fails**
+
+- Recheck your username and password in **`1964-ra.ini`**.
+- If a saved token is no longer valid, clear the **`Token=`** value, enter your password again, and restart 1964.
+
+See [Troubleshooting](docs/TROUBLESHOOTING.md) for more help. Remove usernames, tokens, passwords, and other private information before sharing a log.
+
+## Updating
+
+1. Close 1964.
+2. Download the newest release.
+3. Replace only **`plugin/Mouse_Injector_RA.dll`** with the new version.
+4. Keep your existing **`1964-ra.ini`** so your saved login token is preserved.
+
+## Uninstalling
+
+1. Close 1964.
+2. Delete **`plugin/Mouse_Injector_RA.dll`**.
+3. Rename **`plugin/Mouse_Injector_og.dll`** back to **`Mouse_Injector.dll`**.
+4. If you also want to remove your saved login, delete **`1964-ra.ini`** and **`retroachievements.log`**.
+
+## Compatibility and limitations
+
+- GoldenEye 007 and Perfect Dark only
+- Windows x86 only
+- Casual achievements only; Hardcore cannot be enabled
+- A RetroAchievements-supported ROM hash is required
+- Other N64 games are not supported
+- This is experimental community software
+
+## More information
+
+- [Privacy and account data](PRIVACY.md)
+- [Security policy](SECURITY.md)
+- [License](LICENSE)
+- [Third-party notices](THIRD_PARTY_NOTICES.md)
 
 This project is not affiliated with or endorsed by RetroAchievements, Nintendo, Rare, Microsoft, MGM, EON Productions, the 1964 developers, or the Mouse Injector authors. Product and game names are used only to describe compatibility.
-
